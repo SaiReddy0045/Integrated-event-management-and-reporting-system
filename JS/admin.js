@@ -13,6 +13,7 @@ form.addEventListener("submit", function (e) {
     const start = document.getElementById("start-time").value;
     const end = document.getElementById("end-time").value;
     const coordinators = document.getElementById("coordinators").value.trim();
+    const contact = document.getElementById("contact").value.trim();
 
     if (!eventName || !club || !start || !end || !coordinators) {
         alert("Fill all fields");
@@ -30,6 +31,7 @@ form.addEventListener("submit", function (e) {
         <td>${start}</td>
         <td>${end}</td>
         <td>${coordinators}</td>
+        <td>${contact}</td>
         <td class="actions">
             <button class="btn btn-secondary">Download Report</button>
             <button class="btn btn-danger">Participants List</button>

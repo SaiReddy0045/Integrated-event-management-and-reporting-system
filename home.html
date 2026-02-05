@@ -44,10 +44,12 @@
             <input type="text" placeholder="Last Name" required>
         </div>
         <div class="input-group">
-            <input type="email" placeholder="Email" required>
+            <input type="email" placeholder="Email" oninput="validateEmail()" id="Gmail" required>
+            <small id="mail"> </small>
         </div>
         <div class="input-group">
-            <input type="password" placeholder="Password" required>
+            <input type="password" placeholder="Password" oninput="validatePassword()" id="password" required>
+            <small id="pass"> </small>
         </div>
 
         <button type="submit" class="btn">Sign Up</button>
