@@ -33,7 +33,7 @@ form.addEventListener("submit", function (e) {
         <td>${coordinators}</td>
         <td>${contact}</td>
         <td class="actions">
-            <button class="btn btn-secondary">Download Report</button>
+            <button class="btn btn-secondary" onclick="download()">Download Report</button>
             <button class="btn btn-danger">Participants List</button>
         </td>
     `;
@@ -41,3 +41,6 @@ form.addEventListener("submit", function (e) {
     tableBody.appendChild(row);
     form.reset();
 });
+function download() {
+    window.open("template.html", "_self");
+}
