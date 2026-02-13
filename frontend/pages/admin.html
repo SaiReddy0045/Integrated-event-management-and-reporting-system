@@ -7,55 +7,149 @@
 </head>
 <body>
 
-<header class="navbar">
+<header>
     <h1>EventFlow — Admin</h1>
+    <div class="header-actions">
+        <button id="openAdminSignIn">Sign In</button>
+    </div>
 </header>
 
-<main class="container">
+<div class="container">
 
-    <section class="stats">
-        <h2>Events Created: <span>0</span></h2>
-    </section>
+    <!-- Metrics -->
+    <div class="metrics" aria-hidden="false">
+        <div class="metric-card">
+            <div class="metric-title">Page Views</div>
+            <div id="pageViewsCount" class="metric-value">0</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-title">Unique Visitors</div>
+            <div id="visitorsCount" class="metric-value">0</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-title">People Applied</div>
+            <div id="appliedCount" class="metric-value">0</div>
+        </div>
+    </div>
 
-    <section class="table-section">
-        <table class="event-table">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Event Name</th>
-                    <th>Club</th>
-                    <th>Start</th>
-                    <th>End</th>
-                    <th>Coordinators</th>
-                    <th>ContactNumber</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="tableBody">
+    <!-- EVENTS TABLE SECTION -->
+    <div id="tableSection" class="table-section" style="display: none;">
+        <div class="table-header-section">
+            <h3>Events Created: <span id="eventCount">0</span></h3>
+            <span id="noEventsMsg" class="no-events-msg">No events yet. Create your first event!</span>
+        </div>
+        
+        <div class="table-wrap">
+            <table id="eventsTableMain">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Event Name</th>
+                        <th>Club</th>
+                        <th>Venue</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Coordinators</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="eventTable">
+                    <!-- Filled by JS -->
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-            </tbody>
-        </table>
-    </section>
+    <!-- CREATE EVENT -->
+    <h2>Create New Event</h2>
 
-    <section class="form-section">
-        <h2>Create New Event</h2>
+    <div class="form-container">
+        <div class="form-row">
+            <input type="text" id="name" placeholder="Event Name" class="form-input">
 
-        <form class="event-form" id="event-form">
-            <input type="text" id="event-name" placeholder="Event Name" required>
-            <input type="text" id="club-name" placeholder="Club Name" required>
-            <input type="datetime-local" id="start-time" required>
-            <input type="datetime-local" id="end-time" required>
-            <input type="text" id="coordinators" placeholder="Coordinator Name" required>
-            <input type="number" id="contact" placeholder="Contact Number" required>
-            <button type="submit" class="btn btn-primary" id="addEvent">Create Event</button>
-        </form>
-    </section>
+            <!-- CLUB SELECT -->
+            <select id="club" class="form-input">
+                <option value="">Select Club</option>
+                <option>Designers Club</option>
+                <option>CodeChef VIT</option>
+                <option>Google Developer Student Club (GDSC)</option>
+                <option>Linux Club</option>
+                <option>Robotics Club</option>
+                <option>Data Analytics Club</option>
+                <option>BIOSPHERE</option>
+                <option>Health Club</option>
+                <option>National Service Scheme (NSS)</option>
+                <option>Rotaract Club</option>
+                <option>Youth Red Cross (YRC)</option>
+                <option>Culture IT</option>
+                <option>Dance Club</option>
+                <option>Music Club</option>
+                <option>Sports Club</option>
+                <option>English Literary Association</option>
+                <option>Hindi Literary Association</option>
+                <option>Team ASTREx</option>
+                <option>Team Ignition</option>
+                <option>Team Shaurya Racing</option>
+            </select>
 
-</main>
+            <!-- VENUE SELECT -->
+            <select id="venue" class="form-input">
+                <option value="">Select Venue</option>
+                <option>MG Auditorium</option>
+                <option>Netaji Auditorium</option>
+                <option>Kamarajar Auditorium</option>
+                <option>VOC Auditorium</option>
+                <option>Clock Court</option>
+                <option>AB1 Mini Conference Room</option>
+                <option>Basketball Court</option>
+                <option>Mini Football Ground</option>
+            </select>
+        </div>
 
-<footer class="footer">
+        <div class="form-row">
+            <input type="datetime-local" id="start" class="form-input">
+            <input type="datetime-local" id="end" class="form-input">
+            <input type="text" id="coord" placeholder="Coordinators (comma separated)" class="form-input">
+        </div>
+
+        <button onclick="addEvent()" class="btn-create-event">+ Create Event</button>
+    </div>
+    <br></br>
+    <div>
+    <h2>Report Generator</h2><br>
+    <center>
+   <a href="template.html">
+        <button>Report</button>
+    </a>
+    </center>
+
+    <div>
+</div>
+
+<footer>
     © 2026 EventFlow. All rights reserved.
 </footer>
+</footer>
+
+<!-- Admin Sign-in Modal -->
+<div id="adminAuth" class="modal" aria-hidden="true">
+    <div class="modal-content small">
+        <button class="modal-close" id="closeAdminAuth">✕</button>
+        <h3>Admin Sign In</h3>
+        <input type="email" id="adminEmail" placeholder="Admin email">
+        <input type="password" id="adminPassword" placeholder="Password">
+        <div class="form-row-small"><input type="checkbox" id="showAdminPwd"><label for="showAdminPwd">Show</label></div>
+        <div style="display: flex; flex-direction: column; gap: 12px; margin: 15px 0; padding: 15px; background: rgba(0,145,255,0.08); border-radius: 8px; border: 1px solid rgba(0,145,255,0.2);">
+            <div style="font-size: 0.85rem; color: #06a3ff; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">📱 One-Time Password</div>
+            <div id="adminOtpDisplay" style="background: linear-gradient(90deg, #06a3ff, #0458d6); color: white; padding: 16px; border-radius: 10px; text-align: center; font-size: 28px; font-weight: 800; letter-spacing: 4px; text-shadow: 0 2px 8px rgba(0,0,0,0.2);">000000</div>
+            <button type="button" id="adminRefreshOTP" style="background: linear-gradient(90deg, #06a3ff, #0458d6); color: white; border: none; padding: 10px 16px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.9rem;">🔄 New OTP</button>
+            <input type="text" id="adminOtpInput" placeholder="Enter 6-digit OTP" maxlength="6" inputmode="numeric" style="padding: 10px 12px; border-radius: 8px; border: 2px solid #06a3ff; text-align: center; letter-spacing: 2px; font-weight: 600;">
+        </div>
+        <button id="doAdminSignIn">Sign In</button>
+        <div id="adminAuthMsg" class="auth-msg"></div>
+    </div>
+</div>
+
 <script src="../JS/admin.js"></script>
 </body>
 </html>
