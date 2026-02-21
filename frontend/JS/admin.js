@@ -1,4 +1,3 @@
-jss
 let events = JSON.parse(localStorage.getItem("events")) || [];
 
 // Admin auth modal interactions
@@ -93,18 +92,18 @@ function renderEvents() {
     let tableSection = document.getElementById("tableSection");
     let noEventsMsg = document.getElementById("noEventsMsg");
     
-    table.innerHTML = "";
-
     if (events.length === 0) {
         tableSection.style.display = "none";
+        table.innerHTML = "";
         return;
     }
 
     tableSection.style.display = "block";
-    noEventsMsg.style.display = events.length > 0 ? "none" : "block";
+    noEventsMsg.style.display = "none";
 
+    let tableHTML = "";
     events.forEach((e, i) => {
-        table.innerHTML += `
+        tableHTML += `
             <tr class="table-row-animate">
                 <td class="table-cell-index">${i + 1}</td>
                 <td class="table-cell">${e.name}</td>
@@ -120,6 +119,7 @@ function renderEvents() {
         `;
     });
 
+    table.innerHTML = tableHTML;
     document.getElementById("eventCount").innerText = events.length;
 }
 
@@ -182,10 +182,6 @@ function addEvent() {
     events.push(event);
     localStorage.setItem("events", JSON.stringify(events));
 
-    renderEvents();
-
-    showNotification(`✅ Event "${event.name}" created successfully!`, "success");
-
     // Clear form
     nameInput.value = "";
     coordInput.value = "";
@@ -193,6 +189,13 @@ function addEvent() {
     venueInput.value = "";
     startInput.value = "";
     endInput.value = "";
+
+    // Re-load events from localStorage to ensure sync
+    events = JSON.parse(localStorage.getItem("events")) || [];
+    
+    // Update UI
+    renderEvents();
+    showNotification(`✅ Event "${event.name}" created successfully!`, "success");
 }
 
 function showNotification(message, type = "info") {
